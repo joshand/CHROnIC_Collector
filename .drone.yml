@@ -6,7 +6,7 @@ build:
 
 publish:
     docker:
-        repo: $$DOCKER_USERNAME/CHROnIC_Collector
+        repo: $$DOCKER_USERNAME/chronic_collector
         tag: latest
         username: $$DOCKER_USERNAME
         password: $$DOCKER_PASSWORD
