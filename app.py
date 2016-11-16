@@ -135,7 +135,18 @@ def ProcessXML(content, rootpath, retvals, con_json):
                 #print(k, k2, len(newarr), newarr[k2], len(newarr[k2]), "\n-----------\n")
         #print(newjsonarr)
         jsonarr = newjsonarr
+
+    #retjsonarr = []
+    #if isinstance(jsonarr, dict):
+    #    for jsonelem in jsonarr:
+    #        #print(jsonelem)
+    #        retjsonarr.append(jsonarr[jsonelem])
+    #else:
+    #    retjsonarr = jsonarr
+    #return retjsonarr
+
     return jsonarr
+
 
 def ProcessMessages(msgdata, updateurl, msgdesc):
     msgdata = msgdata.replace("\n","")
@@ -177,6 +188,8 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
             jsonurl = {}
             urlcounter = 0
             for repldata in arrrepldata:
+                #TypeError: list indices must be integers or slices, not dict
+                #print("###############", type(repldata), type(ret2), "==========", repldata, "==========", ret2)
                 replblock = ret2[repldata]
                 replentry = replblock[replkey]
                 replentry = replentry[0]
@@ -203,12 +216,12 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
         if postdata != "":
             if ret1 != "":
                 if postdata.find("%1%") >= 0:
-                    if isinstance(ret1, dict):
+                    if isinstance(ret1, dict) or isinstance(ret1, list):
                         ret1 = str(ret1)
                     postdata = postdata.replace("%1%", ret1)
             if ret2 != "":
                 if postdata.find("%2%") >= 0:
-                    if isinstance(ret2, dict):
+                    if isinstance(ret2, dict) or isinstance(ret2, list):
                         ret2 = str(ret2)
                     postdata = postdata.replace("%2%", ret2)
 
@@ -307,9 +320,21 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
             elif rdata == "ret2":
                 returndata = ret2
 
-            data = "{\"msgresp\":\"{'" + msgdesc + "':" + str(returndata) + "}\"}"
+            retjsonarr = []
+            if isinstance(returndata, dict) or isinstance(returndata, list):
+                for jsonelem in returndata:
+                    #print("*************", jsonelem, returndata[jsonelem])
+                    retjsonarr.append(returndata[jsonelem])
+                    #print("*************", jsonelem, returndata[jsonelem], retjsonarr)
+            else:
+                retjsonarr = returndata
+
+            returndata = str(retjsonarr)
+            #print(returndata)
+
+            data = "{\"msgresp\":\"{'" + msgdesc + "':" + returndata + "}\"}"
             headers = {"Content-Type": "application/json"}
-            print(updateurl)
+            #print(updateurl)
             r = requests.request("POST", updateurl, data=data, headers=headers, verify=False)
             #print(rtype, rdata, data, r)
 
