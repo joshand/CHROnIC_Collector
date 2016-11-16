@@ -4,13 +4,14 @@ import os
 import sys
 
 if len(sys.argv) < 4:
-    sys.exit("Syntax: " + sys.argv[0] + " <file.json> <ip> <un> <pw>")
+    sys.exit("Syntax: " + sys.argv[0] + " <file.json> <description,no_spaces> <ip> <un> <pw>")
 
 #testfile = 'vcenter.json'
 testfile = sys.argv[1]
-testip = sys.argv[2]
-testun = sys.argv[3]
-testpw = sys.argv[4]
+testdesc = sys.argv[2]
+testip = sys.argv[3]
+testun = sys.argv[4]
+testpw = sys.argv[5]
 baseurl = os.environ['chronicbus']
 
 def getfile(fn):
@@ -41,7 +42,7 @@ ndata = doreplace(fdata, testip, testun, testpw)
 colid = getfile("/tmp/channel.id").replace("\n", "")
 url = "http://" + baseurl + "/api/send/" + colid
 #print("[" + url + "]")
-content = '{"msgdata":"' + ndata + '", "status": "0"}'
+content = '{"msgdata":"' + ndata + '", "status": "0", "desc":"' +  testdesc + '"}'
 ret = dopost(url, content)
 print(content)
 print(ret)

@@ -137,7 +137,7 @@ def ProcessXML(content, rootpath, retvals, con_json):
         jsonarr = newjsonarr
     return jsonarr
 
-def ProcessMessages(msgdata, updateurl):
+def ProcessMessages(msgdata, updateurl, msgdesc):
     msgdata = msgdata.replace("\n","")
     #print(msgdata)
     jsondata = json.loads(msgdata)
@@ -307,7 +307,7 @@ def ProcessMessages(msgdata, updateurl):
             elif rdata == "ret2":
                 returndata = ret2
 
-            data = "{\"msgresp\":\"" + str(returndata) + "\"}"
+            data = "{\"msgresp\":\"{'" + msgdesc + "':" + str(returndata) + "}\"}"
             headers = {"Content-Type": "application/json"}
             print(updateurl)
             r = requests.request("POST", updateurl, data=data, headers=headers, verify=False)
@@ -335,9 +335,15 @@ print(url)
 while True:
     r = requests.get(url)
     msgdata = r.content.decode("UTF-8")
-    msgjson = json.loads(msgdata)
-    for msg in msgjson:
-        ProcessMessages(msg['msgdata'], updateurl + str(msg['id']))
-    #print(msgjson[0]['msgdata'])
+    if msgdata != "":
+        msgjson = json.loads(msgdata)
+        for msg in msgjson:
+            if "desc" in msgdata:
+                msgdesc = msg['desc']
+            else:
+                msgdesc = msg['id']
+
+            ProcessMessages(msg['msgdata'], updateurl + str(msg['id']), msgdesc)
+        #print(msgjson[0]['msgdata'])
     break
     #time.sleep(10)
