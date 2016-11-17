@@ -16,8 +16,7 @@ RUN apt-get update && apt-get install -y \
     wget \
  && rm -rf /var/lib/apt/lists/*
 
-COPY ["app.py", "requirements.txt", "genid.sh", "/root/"]
+COPY ["app.py", "requirements.txt", "/root/"]
 RUN pip3 install -r /root/requirements.txt
 RUN chmod +x /root/app.py
-RUN chmod +x /root/genid.sh
 CMD ["python3", "-u", "/root/app.py"]
