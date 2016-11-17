@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM chapeter/chronic_docker:latest
 MAINTAINER Josh Anderson <joshand@cisco.com>
 
 # You can provide comments in Dockerfiles
@@ -21,4 +21,4 @@ RUN pip install -r /root/requirements.txt
 RUN chmod +x /root/app.py
 RUN chmod +x /root/genid.sh
 RUN /root/genid.sh
-CMD ["python", "-u", "/root/app.py"]
+CMD ["python3", "-u", "/root/app.py"]
