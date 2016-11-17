@@ -334,7 +334,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
 
             data = "{\"msgresp\":\"{'" + msgdesc + "':" + returndata + "}\"}"
             headers = {"Content-Type": "application/json"}
-            #print(updateurl)
+            print(updateurl)
             r = requests.request("POST", updateurl, data=data, headers=headers, verify=False)
             #print(rtype, rdata, data, r)
 
@@ -370,5 +370,5 @@ while True:
 
             ProcessMessages(msg['msgdata'], updateurl + str(msg['id']), msgdesc)
         #print(msgjson[0]['msgdata'])
-    break
-    #time.sleep(10)
+    #break
+    time.sleep(15)

@@ -9,15 +9,17 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     dpkg-sig \
+    libxml2-dev \
+    libxslt1-dev \
     mercurial \
     wget \
  && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 5000
-
-COPY ["app.py", "requirements.txt", "/root/"]
+COPY ["app.py", "requirements.txt", "genid.sh", "/root/"]
 RUN wget https://bootstrap.pypa.io/get-pip.py
 RUN python get-pip.py
 RUN pip install -r /root/requirements.txt
 RUN chmod +x /root/app.py
+RUN chmod +x /root/genid.sh
+CMD ["/root/genid.sh"]
 CMD ["/root/app.py"]
