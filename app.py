@@ -360,6 +360,7 @@ updateurl = 'http://' + baseurl + '/api/update/'
 print(url)
 
 while True:
+    print("Check Bus:, url)
     r = requests.get(url)
     msgdata = r.content.decode("UTF-8")
     if msgdata != "":
