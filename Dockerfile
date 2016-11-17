@@ -21,4 +21,4 @@ RUN pip install -r /root/requirements.txt
 RUN chmod +x /root/app.py
 RUN chmod +x /root/genid.sh
 RUN /root/genid.sh
-CMD ["/root/app.py"]
+CMD ["python", "-u", "/root/app.py"]
