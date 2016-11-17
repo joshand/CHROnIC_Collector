@@ -6,7 +6,6 @@ MAINTAINER Josh Anderson <joshand@cisco.com>
 RUN apt-get update && apt-get install -y \
     aufs-tools \
     automake \
-    build-dev \
     build-essential \
     curl \
     dpkg-sig \
