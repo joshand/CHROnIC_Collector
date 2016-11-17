@@ -15,9 +15,7 @@ RUN apt-get update && apt-get install -y \
  && rm -rf /var/lib/apt/lists/*
 
 COPY ["app.py", "requirements.txt", "genid.sh", "/root/"]
-RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python get-pip.py
-RUN pip install -r /root/requirements.txt
+RUN pip3 install -r /root/requirements.txt
 RUN chmod +x /root/app.py
 RUN chmod +x /root/genid.sh
 RUN /root/genid.sh
