@@ -42,8 +42,6 @@ Collector - This microservice is designed to reach out to the bus to consume mes
     * This kicks off the application. This application listens and is delivered strictly as an API.
 * test.py
     * Flask build test application. Used to validate API functionality for the build process.
-* genid.sh
-    * Generates channel id for the collector to communicate with the bus
 * ucs.csv / ucs.json
     * Sample UCS API calls
 * vcenter.csv / vcenter.json

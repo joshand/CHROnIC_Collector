@@ -40,6 +40,15 @@ def getchannelid():
     return data
 
 
+def writechannelid(chid):
+    try:
+        with open('/tmp/channel.id', 'w') as myfile:
+            myfile.write(chid)
+    except OSError as e:
+        pass
+    except IOError as e:
+        pass
+
 def download_file(url, local_filename, creds):
     #http://stackoverflow.com/questions/16694907/how-to-download-large-file-in-python-with-requests-py
     #local_filename = url.split('/')[-1]
@@ -370,6 +379,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
 mychid = getchannelid()
 if mychid == -1:
     mychid = id_generator()
+    writechannelid(mychid)
 
 baseurl = os.environ['chronicbus']
 url = 'http://' + baseurl + '/api/get/' + mychid
