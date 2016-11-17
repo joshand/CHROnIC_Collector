@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     dpkg-sig \
+    gcc \
     libxml2-dev \
     libxslt1-dev \
     mercurial \
