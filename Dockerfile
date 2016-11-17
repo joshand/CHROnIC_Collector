@@ -6,13 +6,12 @@ MAINTAINER Josh Anderson <joshand@cisco.com>
 RUN apt-get update && apt-get install -y \
     aufs-tools \
     automake \
+    build-dev \
     build-essential \
     curl \
     dpkg-sig \
-    gcc \
-    libxml2-dev \
-    libxslt1-dev \
     mercurial \
+    python-lxml \
     wget \
  && rm -rf /var/lib/apt/lists/*
 
