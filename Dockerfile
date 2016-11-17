@@ -20,4 +20,5 @@ COPY ["app.py", "requirements.txt", "genid.sh", "/root/"]
 RUN pip3 install -r /root/requirements.txt
 RUN chmod +x /root/app.py
 RUN chmod +x /root/genid.sh
-CMD ["/root/genid.sh","&&","python3", "-u", "/root/app.py"]
+CMD ["/root/genid.sh"]
+CMD ["python3", "-u", "/root/app.py"]
