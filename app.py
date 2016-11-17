@@ -276,8 +276,16 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 #print(founddata)
         else:
             print(url)
-            r = requests.request(method, url, data=data, headers=headers, auth=auth, cookies=cookies, verify=False)
-            rcontent = r.content.decode("UTF-8")
+            try:
+                r = requests.request(method, url, data=data, headers=headers, auth=auth, cookies=cookies, verify=False)
+            except requests.exceptions.RequestException as e:
+                print(e)
+                r = ""
+
+            if r:
+                rcontent = r.content.decode("UTF-8")
+            else:
+                rcontent = ""
 
         if returndata == "*":
             founddata = rcontent
@@ -337,7 +345,12 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
             data = "{\"msgresp\":\"{'" + msgdesc + "':" + returndata + "}\"}"
             headers = {"Content-Type": "application/json"}
             print(updateurl)
-            r = requests.request("POST", updateurl, data=data, headers=headers, verify=False)
+            try:
+                r = requests.request("POST", updateurl, data=data, headers=headers, verify=False)
+            except requests.exceptions.RequestException as e:
+                print(e)
+                r = ""
+
             #print(rtype, rdata, data, r)
 
         ##print(msg)
@@ -357,12 +370,21 @@ if mychid == -1:
 baseurl = os.environ['chronicbus']
 url = 'http://' + baseurl + '/api/get/' + mychid
 updateurl = 'http://' + baseurl + '/api/update/'
-print("Channel ID:", mychid)
+print("Channel ID: " + mychid)
 
 while True:
-    print("Check Bus:", url)
-    r = requests.get(url)
-    msgdata = r.content.decode("UTF-8")
+    print("Check Bus: " + url)
+    try:
+        r = requests.get(url)
+    except requests.exceptions.RequestException as e:
+        print(e)
+        r = ""
+
+    if r:
+        msgdata = r.content.decode("UTF-8")
+    else:
+        msgdata = ""
+
     if msgdata != "":
         msgjson = json.loads(msgdata)
         for msg in msgjson:
