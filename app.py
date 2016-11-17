@@ -29,6 +29,8 @@ def getchannelid():
         data = data.replace("\n", "")
     except OSError as e:
         data = -1
+    except IOError as e:
+        data = -1
 
     return data
 
