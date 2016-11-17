@@ -357,10 +357,10 @@ if mychid == -1:
 baseurl = os.environ['chronicbus']
 url = 'http://' + baseurl + '/api/get/' + mychid
 updateurl = 'http://' + baseurl + '/api/update/'
-print(url)
+print("Channel ID:", mychid)
 
 while True:
-    print("Check Bus:, url)
+    print("Check Bus:", url)
     r = requests.get(url)
     msgdata = r.content.decode("UTF-8")
     if msgdata != "":
