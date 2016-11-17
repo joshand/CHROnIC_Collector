@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     dpkg-sig \
+    libxml2-dev \
+    libxslt-dev \
     mercurial \
     python-lxml \
     wget \
