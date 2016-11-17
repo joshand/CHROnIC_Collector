@@ -9,8 +9,13 @@ from subprocess import call
 from lxml import etree
 from io import StringIO
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+import random
+import string
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+def id_generator(size=8, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 def cleanxml(data):
     data = data.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
@@ -364,8 +369,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
 
 mychid = getchannelid()
 if mychid == -1:
-    call("./genid.sh")
-    mychid = getchannelid()
+    mychid = id_generator()
 
 baseurl = os.environ['chronicbus']
 url = 'http://' + baseurl + '/api/get/' + mychid
