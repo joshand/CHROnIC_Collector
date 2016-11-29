@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import base64
 import json
 import requests
 import time
@@ -14,9 +15,13 @@ import string
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
+
+# -- id_generator: Generate 8 digit random string; used for a Channel ID
 def id_generator(size=8, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
     return ''.join(random.choice(chars) for _ in range(size))
 
+
+# -- cleanxml: This strips the namespaces from imported XML to make processing simpler
 def cleanxml(data):
     data = data.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
     data = data.replace('<soapenv:', '<')
@@ -27,6 +32,7 @@ def cleanxml(data):
     return data
 
 
+# -- getchannelid: This attempts to import an existing Channel ID from a stored file.
 def getchannelid():
     try:
         with open('/tmp/channel.id', 'r') as myfile:
@@ -40,6 +46,7 @@ def getchannelid():
     return data
 
 
+# -- writechannelid: This writes a generated Channel ID to a stored file.
 def writechannelid(chid):
     try:
         with open('/tmp/channel.id', 'w') as myfile:
@@ -49,6 +56,8 @@ def writechannelid(chid):
     except IOError as e:
         pass
 
+
+# -- download_file: This downloads a specified file to disk.
 def download_file(url, local_filename, creds):
     #http://stackoverflow.com/questions/16694907/how-to-download-large-file-in-python-with-requests-py
     #local_filename = url.split('/')[-1]
@@ -62,6 +71,7 @@ def download_file(url, local_filename, creds):
     return local_filename
 
 
+# -- ProcessXML: This processes XML code and retrieves specified data from the tree.
 def ProcessXML(content, rootpath, retvals, con_json):
     fdata = cleanxml(content)
     f = StringIO(fdata)
@@ -164,9 +174,11 @@ def ProcessXML(content, rootpath, retvals, con_json):
     return jsonarr
 
 
+# -- ProcessMessages: This function processes messages in the thread and performs action on those messages.
 def ProcessMessages(msgdata, updateurl, msgdesc):
+    msgdata = base64.b64decode(bytes(msgdata, "utf-8")).decode("ascii")
     msgdata = msgdata.replace("\n","")
-    #print(msgdata)
+    print(msgdata)
     jsondata = json.loads(msgdata)
 
     ret1 = ""
@@ -174,6 +186,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
     ret3 = ""
     founddata = ""
     foundjson = {}
+    # ++ Loop through each message in the JSON data and parse out the individual fields
     for msg in jsondata:
         method = msg['method'].upper()
         url = msg['url']
@@ -191,9 +204,11 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
         else:
             cons_data = int(cons_data)
 
+        # ++ Look for URLs in this format: https://%2:netConfig/candidateVnic/spec/ip...
         if url.find("%") > 0:
             arrurl = url.split("%")
             urlsubst = arrurl[1]
+            # ++ Parse out the fields. In this example, %2 is taking return data from a previous call, and storing the data from netConfig
             arrurlsubst = urlsubst.split(":")
             replval = arrurlsubst[0]
             replkey = arrurlsubst[1]
@@ -203,6 +218,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
 
             jsonurl = {}
             urlcounter = 0
+            # ++ Loop through the data previously stored, strip out the values and store them in a JSON array
             for repldata in arrrepldata:
                 #TypeError: list indices must be integers or slices, not dict
                 #print("###############", type(repldata), type(ret2), "==========", repldata, "==========", ret2)
@@ -213,6 +229,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 urlcounter = urlcounter + 1
 
             url = jsonurl
+        # ++ If Basic authentication is required, parse auth string and prepare credentials. If not, send clear string.
         if basicauth != "":
             if basicauth.find(":") >= 0:
                 basicauth = basicauth.split(":")
@@ -222,6 +239,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
         else:
             auth = ""
 
+        # ++ Set up Headers for request
         headers = {}
         if contenttype != "":
             headers['content-type'] = contenttype
@@ -229,7 +247,11 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
         if soapaction != "":
             headers['SOAPAction'] = soapaction
 
+        # ++ If this is a request that has a content-body, prepare that content
         if postdata != "":
+            # ++ Look for substitutions that need to be made
+            # ++ For example, <configResolveClass cookie='%1%' classId='computeBlade' inHierarchical='true'>
+            # ++ In this example, we will substitute in the data previously stored in return 1 for %1%
             if ret1 != "":
                 if postdata.find("%1%") >= 0:
                     if isinstance(ret1, dict) or isinstance(ret1, list):
@@ -245,6 +267,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
         else:
             data = ""
 
+        # ++
         if cookie == "%1%":
             if ret1 != "":
                 cookies = eval(ret1)
@@ -376,6 +399,8 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
         #print("ret2", ret2)
         #print("\n\n")
 
+
+# -- Main Program Start
 mychid = getchannelid()
 if mychid == -1:
     mychid = id_generator()
@@ -386,6 +411,7 @@ url = 'http://' + baseurl + '/api/get/' + mychid
 updateurl = 'http://' + baseurl + '/api/update/'
 print("Channel ID: " + mychid)
 
+# -- Main Program Loop
 while True:
     print("Check Bus: " + url)
     try:

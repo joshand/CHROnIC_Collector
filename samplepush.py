@@ -2,6 +2,7 @@
 import requests
 import os
 import sys
+import base64
 
 if len(sys.argv) < 4:
     sys.exit("Syntax: " + sys.argv[0] + " <file.json> <description,no_spaces> <ip> <un> <pw>")
@@ -26,8 +27,8 @@ def doreplace(data, sip, sun, spw):
     newdata = newdata.replace('%un%',sun)
     newdata = newdata.replace('%pw%',spw)
 
-    newdata = newdata.replace('\\\"','\"')
-    newdata = newdata.replace('\"','\\\"')
+    #newdata = newdata.replace('\\\"','\"')
+    #newdata = newdata.replace('\"','\\\"')
 
     return newdata
 
@@ -42,7 +43,7 @@ ndata = doreplace(fdata, testip, testun, testpw)
 colid = getfile("/tmp/channel.id").replace("\n", "")
 url = "http://" + baseurl + "/api/send/" + colid
 #print("[" + url + "]")
-content = '{"msgdata":"' + ndata + '", "status": "0", "desc":"' +  testdesc + '"}'
+content = '{"msgdata":"' + base64.b64encode(bytes(ndata, "utf-8")).decode("ascii") + '", "status": "0", "desc":"' +  testdesc + '"}'
 ret = dopost(url, content)
 print(content)
 print(ret)

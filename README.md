@@ -65,7 +65,7 @@ The following components are required to locall run this container:
 **Get the container:**
 The latest build of this project is available as a Docker image from Docker Hub:
 ```
-docker pull joshand/chronic_bus:latest
+docker pull joshand/chronic_collector:latest
 ```
 
 **Run the application:**
