@@ -381,8 +381,10 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
             returndata = str(retjsonarr)
             #print(returndata)
 
+            returndata = '{"' + msgdesc + '":"' + returndata + '"}'
             returndata = base64.b64encode(bytes(returndata, "utf-8")).decode("ascii")
-            data = "{\"msgresp\":\"{'" + msgdesc + "':" + returndata + "}\"}"
+            #data = "{\"msgresp\":\"{'" + msgdesc + "':" + returndata + "}\"}"
+            data = '{"msgresp":"' + returndata + '"}'
             headers = {"Content-Type": "application/json"}
             print(updateurl)
             try:
