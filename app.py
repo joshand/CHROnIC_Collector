@@ -180,7 +180,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
     if msgdata.find("\\") >= 0:
         msgdata = msgdata.replace('\"', '"')
     msgdata = msgdata.replace("\n","")
-    print(msgdata)
+    #print(msgdata)
     jsondata = json.loads(msgdata)
 
     ret1 = ""
@@ -381,6 +381,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
             returndata = str(retjsonarr)
             #print(returndata)
 
+            returndata = base64.b64encode(bytes(returndata, "utf-8")).decode("ascii")
             data = "{\"msgresp\":\"{'" + msgdesc + "':" + returndata + "}\"}"
             headers = {"Content-Type": "application/json"}
             print(updateurl)
