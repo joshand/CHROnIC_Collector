@@ -177,7 +177,7 @@ def ProcessXML(content, rootpath, retvals, con_json):
 # -- ProcessMessages: This function processes messages in the thread and performs action on those messages.
 def ProcessMessages(msgdata, updateurl, msgdesc):
     msgdata = base64.b64decode(bytes(msgdata, "utf-8")).decode("ascii")
-    if msgdata.find("\") >= 0:
+    if msgdata.find("\\") >= 0:
         msgdata = msgdata.replace('\"', '"')
     msgdata = msgdata.replace("\n","")
     print(msgdata)
