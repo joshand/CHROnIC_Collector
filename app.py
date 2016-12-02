@@ -323,6 +323,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 for urlid in jsonurl:
                     url = jsonurl[urlid]
                     print(url)
+                    sendMessage(sparkroom, url)
 
                     try:
                         d = download_file(url, filekey, auth)
@@ -332,6 +333,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
 
                     if d == "0":
                         founddata = "Unable to Access"
+                        sendMessage(sparkroom, founddata)
                     else:
                         rval = subprocess.run(postprocessing, shell=True, stdout=subprocess.PIPE)
                         lines = rval.stdout.decode('UTF-8')
@@ -350,6 +352,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                     #print(founddata)
             else:
                 print(url)
+                sendMessage(sparkroom, url)
                 try:
                     r = requests.request(method, url, data=data, headers=headers, auth=auth, cookies=cookies, verify=False)
                 except requests.exceptions.RequestException as e:
@@ -422,10 +425,12 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 data = '{"msgresp":"' + returndata + '"}'
                 headers = {"Content-Type": "application/json"}
                 print(updateurl)
+                sendMessage(sparkroom, updateurl)
                 try:
                     r = requests.request("POST", updateurl, data=data, headers=headers, verify=False)
                 except requests.exceptions.RequestException as e:
                     print(e)
+                    sendMessage(sparkroom, e)
                     r = ""
 
                 #print(rtype, rdata, data, r)
@@ -463,6 +468,7 @@ while True:
         r = requests.get(url)
     except requests.exceptions.RequestException as e:
         print(e)
+        sendMessage(sparkroom, e)
         r = ""
 
     if r:
