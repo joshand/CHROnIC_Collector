@@ -43,6 +43,15 @@ def sendMessage(roomid,message):
         response = requests.request("POST", url, data=jsondata, headers=headers)
 
 
+# -- forceString: Make sure input text is a string, convert dict's and list's to string
+def forceString(vardata):
+    retdata = vardata
+    if isinstance(vardata, dict) or isinstance(vardata, list):
+        retdata = str(retdata)
+
+    return retdata
+
+
 # -- id_generator: Generate 8 digit random string; used for a Channel ID
 def id_generator(size=8, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -199,10 +208,7 @@ def ProcessXML(content, rootpath, retvals, con_json):
         #    retjsonarr = jsonarr
         #return retjsonarr
     except:
-        sendMessage(sparkroom, content)
-        sendMessage(sparkroom, rootpath)
-        sendMessage(sparkroom, retvals)
-        sendMessage(sparkroom, con_json)
+        sendMessage(sparkroom, "=================\nException Encountered in ProcessXML.\nContent:" + forceString(content) + "\nRoot Path(s):" + forceString(rootpath) + "\nReturn Values:" + forceString(retvals) + "\nConsolidate JSON:" + forceString(con_json) + "\n=================")
         jsonarr = []
 
     return jsonarr
@@ -323,7 +329,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 for urlid in jsonurl:
                     url = jsonurl[urlid]
                     print(url)
-                    sendMessage(sparkroom, url)
+                    sendMessage(sparkroom, "DOWNLOAD: " + url)
 
                     try:
                         d = download_file(url, filekey, auth)
@@ -352,7 +358,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                     #print(founddata)
             else:
                 print(url)
-                sendMessage(sparkroom, url)
+                sendMessage(sparkroom, method + ":" + url)
                 try:
                     r = requests.request(method, url, data=data, headers=headers, auth=auth, cookies=cookies, verify=False)
                 except requests.exceptions.RequestException as e:
@@ -425,12 +431,12 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 data = '{"msgresp":"' + returndata + '"}'
                 headers = {"Content-Type": "application/json"}
                 print(updateurl)
-                sendMessage(sparkroom, updateurl)
+                sendMessage(sparkroom, "POST:" + updateurl)
                 try:
                     r = requests.request("POST", updateurl, data=data, headers=headers, verify=False)
                 except requests.exceptions.RequestException as e:
                     print(e)
-                    sendMessage(sparkroom, e)
+                    sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
                     r = ""
 
                 #print(rtype, rdata, data, r)
@@ -444,9 +450,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
             #print("ret2", ret2)
             #print("\n\n")
     except:
-        sendMessage(sparkroom, msgdata)
-        sendMessage(sparkroom, updateurl)
-        sendMessage(sparkroom, msgdesc)
+        sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nMessage Data:" + forceString(msgdata) + "\nUpdate URL" + forceString(updateurl) + "\nMessage Description:" + forceString(msgdesc) + "\n=================")
 
 
 # -- Main Program Start
@@ -468,7 +472,7 @@ while True:
         r = requests.get(url)
     except requests.exceptions.RequestException as e:
         print(e)
-        sendMessage(sparkroom, e)
+        sendMessage(sparkroom, "=================\nException Encountered in Main.\nError:" + forceString(e) + "\n=================")
         r = ""
 
     if r:
