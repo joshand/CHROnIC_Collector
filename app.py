@@ -19,6 +19,7 @@ try:
     sparktoken = os.environ['sparktoken']
     sparkauth = "Bearer %s" % sparktoken
     sparkroom = os.environ['sparkroom']
+    dodebug = os.environ['collectordebug']
 except:
     sparktoken = ""
     sparkauth = ""
@@ -367,6 +368,8 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
 
                 if r:
                     rcontent = r.content.decode("UTF-8")
+                    if dodebug=="1":
+                        sendMessage(sparkroom, "Content:" + rcontent)
                 else:
                     rcontent = ""
 
