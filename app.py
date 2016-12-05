@@ -366,12 +366,17 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                     print(e)
                     sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
                     r = ""
+                except Exception, e:
+                    sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
+                    r = ""
 
                 if r:
                     rcontent = r.content.decode("UTF-8")
                     if dodebug=="1":
                         sendMessage(sparkroom, "Content:" + rcontent)
                 else:
+                    if dodebug=="1":
+                        sendMessage(sparkroom, "No Content")
                     rcontent = ""
 
             if returndata == "*":
