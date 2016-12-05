@@ -19,7 +19,9 @@ try:
     sparktoken = os.environ['sparktoken']
     sparkauth = "Bearer %s" % sparktoken
     sparkroom = os.environ['sparkroom']
+    print("Spark Logging Enabled.")
     dodebug = os.environ['collectordebug']
+    print("Debug Enabled.")
 except:
     sparktoken = ""
     sparkauth = ""
@@ -366,7 +368,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                     print(e)
                     sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
                     r = ""
-                except Exception, e:
+                except Exception as e:
                     sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
                     r = ""
 
