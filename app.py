@@ -363,16 +363,13 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 print(url)
                 sendMessage(sparkroom, method + ":" + url)
                 if dodebug=="1":
-                    sendMessage(sparkroom, data + "\n" + headers + "\n" + auth)
+                    sendMessage(sparkroom, forceString(data) + "\n" + forceString(headers) + "\n" + forceString(auth))
 
                 try:
                     r = requests.request(method, url, data=data, headers=headers, auth=auth, cookies=cookies, verify=False)
-                except requests.exceptions.RequestException as e:
-                    print(e)
-                    sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
-                    r = ""
                 except Exception as e:
-                    sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
+                    #requests.exceptions.RequestException
+                    sendMessage(sparkroom, "=================\n(1) Exception Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
                     r = ""
 
                 if r:
@@ -448,9 +445,10 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 sendMessage(sparkroom, "POST:" + updateurl)
                 try:
                     r = requests.request("POST", updateurl, data=data, headers=headers, verify=False)
-                except requests.exceptions.RequestException as e:
+                except Exception as e:
+                    #requests.exceptions.RequestException
                     print(e)
-                    sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
+                    sendMessage(sparkroom, "=================\n(2) Exception Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
                     r = ""
 
                 #print(rtype, rdata, data, r)
@@ -463,8 +461,8 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
             #print("ret1", ret1)
             #print("ret2", ret2)
             #print("\n\n")
-    except:
-        sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nMessage Data:" + forceString(msgdata) + "\nUpdate URL" + forceString(updateurl) + "\nMessage Description:" + forceString(msgdesc) + "\n=================")
+    except Exception as e:
+        sendMessage(sparkroom, "=================\n(3) Exception Encountered in ProcessMessages.\nError:" + forceString(e) + "\nMessage Data:" + forceString(msgdata) + "\nUpdate URL" + forceString(updateurl) + "\nMessage Description:" + forceString(msgdesc) + "\n=================")
 
 
 # -- Main Program Start
