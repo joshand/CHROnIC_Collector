@@ -364,6 +364,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                     r = requests.request(method, url, data=data, headers=headers, auth=auth, cookies=cookies, verify=False)
                 except requests.exceptions.RequestException as e:
                     print(e)
+                    sendMessage(sparkroom, "=================\nException Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
                     r = ""
 
                 if r:
