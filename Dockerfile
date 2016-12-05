@@ -21,4 +21,5 @@ EXPOSE 5000
 COPY ["app.py", "hc.py", "requirements.txt", "/root/"]
 RUN pip3 install -r /root/requirements.txt
 RUN chmod +x /root/app.py /root/hc.py
-CMD ["python3", "-u", "/root/hc.py", "&", "python3", "-u", "/root/app.py"]
+CMD python3 -u /root/hc.py & python3 -u /root/app.py
+
