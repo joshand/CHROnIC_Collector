@@ -362,6 +362,9 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
             else:
                 print(url)
                 sendMessage(sparkroom, method + ":" + url)
+                if dodebug=="1":
+                    sendMessage(sparkroom, data + "\n" + headers + "\n" + auth)
+
                 try:
                     r = requests.request(method, url, data=data, headers=headers, auth=auth, cookies=cookies, verify=False)
                 except requests.exceptions.RequestException as e:
