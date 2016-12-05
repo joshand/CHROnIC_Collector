@@ -1,0 +1,27 @@
+{
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "joshand/chronic_collector:latest",
+            "forcePullImage": true,
+            "network": "BRIDGE",
+            "portMappings": [{
+                "containerPort": 5000,
+                "hostPort": 0
+            }]
+        },
+        "forcePullImage": true
+    },
+    "healthChecks": [{
+        "protocol": "TCP",
+        "portIndex": 0
+    }],
+    "id": "/imapex/chronic/collector",
+    "instances": 1,
+    "cpus": 0.1,
+    "mem": 16,
+    "env": {
+        "chronicbus": "imapex-chronic-bus.green.browndogtech.com"
+    }
+}
+
