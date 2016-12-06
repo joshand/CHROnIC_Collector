@@ -222,11 +222,10 @@ def ProcessXML(content, rootpath, retvals, con_json):
 # -- ProcessMessages: This function processes messages in the thread and performs action on those messages.
 def ProcessMessages(msgdata, updateurl, msgdesc):
     try:
-        if dodebug==1:
-            #sendMessage(sparkroom, "Encoded Message Data" + forceString(msgdata))
-            pass
+        if dodebug=="1":
+            sendMessage(sparkroom, "Encoded Message Data" + forceString(msgdata))
         msgdata = base64.b64decode(bytes(msgdata, "utf-8")).decode("ascii")
-        if dodebug==1:
+        if dodebug=="1":
             sendMessage(sparkroom, "Decoded Message Data" + forceString(msgdata))
         if msgdata.find("\\") >= 0:
             msgdata = msgdata.replace('\"', '"')
