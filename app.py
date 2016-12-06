@@ -51,6 +51,8 @@ def forceString(vardata):
     retdata = vardata
     if isinstance(vardata, dict) or isinstance(vardata, list):
         retdata = str(retdata)
+    else
+        retdata = vardata
 
     return retdata
 
@@ -220,7 +222,11 @@ def ProcessXML(content, rootpath, retvals, con_json):
 # -- ProcessMessages: This function processes messages in the thread and performs action on those messages.
 def ProcessMessages(msgdata, updateurl, msgdesc):
     try:
+        if dodebug==1:
+            #sendMessage(sparkroom, "Encoded Message Data" + forceString(msgdata))
         msgdata = base64.b64decode(bytes(msgdata, "utf-8")).decode("ascii")
+        if dodebug==1:
+            sendMessage(sparkroom, "Decoded Message Data" + forceString(msgdata))
         if msgdata.find("\\") >= 0:
             msgdata = msgdata.replace('\"', '"')
         msgdata = msgdata.replace("\n","")
@@ -482,7 +488,8 @@ while True:
     print("Check Bus: " + url)
     try:
         r = requests.get(url)
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
+        #requests.exceptions.RequestException
         print(e)
         sendMessage(sparkroom, "=================\nException Encountered in Main.\nError:" + forceString(e) + "\n=================")
         r = ""
