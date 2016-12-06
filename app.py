@@ -70,7 +70,6 @@ def id_generator(size=8, chars=string.ascii_uppercase + string.digits + string.a
 def cleanxml(data):
     if dodebug=="1":
         print("Starting XML Cleaning.")
-        sendMessage(sparkroom, "Starting XML Cleaning.")
     data = data.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
     data = data.replace('<soapenv:', '<')
     data = data.replace('</soapenv:', '</')
@@ -79,7 +78,6 @@ def cleanxml(data):
     data = data.replace('xsi:', 'xsi')
     if dodebug=="1":
         print("Finishing XML Cleaning.")
-        sendMessage(sparkroom, "Finishing XML Cleaning.")
     return data
 
 
@@ -126,27 +124,6 @@ def download_file(url, local_filename, creds):
 def ProcessXML(content, rootpath, retvals, con_json):
     try:
         if dodebug=="1":
-            print("Dumping Debug Data")
-            print("============================")
-            print("| Content                  |")
-            print("============================")
-            print(content)
-            print("============================")
-            print("| Root Path                |")
-            print("============================")
-            print(rootpath)
-            print("============================")
-            print("| Return Values            |")
-            print("============================")
-            print(retvals)
-            print("============================")
-            print("| Consolidate?             |")
-            print("============================")
-            print(con_json)
-            print("============================")
-            print("| Complete                 |")
-            print("============================")
-        if dodebug=="1":
             print("Starting XML Decoding.")
             sendMessage(sparkroom, "Starting XML Decoding.")
         fdata = cleanxml(content)
@@ -154,6 +131,7 @@ def ProcessXML(content, rootpath, retvals, con_json):
         if dodebug=="1":
             print("Between String and Parse.")
             sendMessage(sparkroom, "Between String and Parse.")
+            print(f)
         tree = etree.parse(f)
         if dodebug=="1":
             print("XML Tree Ready.")
