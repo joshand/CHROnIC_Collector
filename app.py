@@ -126,6 +126,9 @@ def ProcessXML(content, rootpath, retvals, con_json):
             sendMessage(sparkroom, "Starting XML Decoding.")
         fdata = cleanxml(content)
         f = StringIO(fdata)
+        if dodebug=="1":
+            print("Between String and Parse.")
+            sendMessage(sparkroom, "Between String and Parse.")
         tree = etree.parse(f)
         if dodebug=="1":
             print("XML Tree Ready.")
@@ -231,6 +234,7 @@ def ProcessXML(content, rootpath, retvals, con_json):
         #    retjsonarr = jsonarr
         #return retjsonarr
     except Exception as e:
+        print("Exception: " + e.strerror)
         sendMessage(sparkroom, "=================\nException Encountered in ProcessXML.\n" + forceString(e.strerror) + "\nContent:\n```\n" + forceString(content) + "\nRoot Path(s):" + forceString(rootpath) + "\nReturn Values:" + forceString(retvals) + "\nConsolidate JSON:" + forceString(con_json) + "\n```\n=================")
         jsonarr = []
 
