@@ -20,8 +20,8 @@ try:
     sparkauth = "Bearer %s" % sparktoken
     sparkroom = os.environ['sparkroom']
     print("Spark Logging Enabled.")
-    #dodebug = os.environ['collectordebug']
-    #print("Debug Enabled.")
+    dodebug = os.environ['collectordebug']
+    print("Debug Enabled.")
 except:
     sparktoken = ""
     sparkauth = ""
