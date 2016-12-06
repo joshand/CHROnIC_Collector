@@ -223,10 +223,10 @@ def ProcessXML(content, rootpath, retvals, con_json):
 def ProcessMessages(msgdata, updateurl, msgdesc):
     try:
         if dodebug=="1":
-            sendMessage(sparkroom, "Encoded Message Data" + forceString(msgdata))
+            sendMessage(sparkroom, "Encoded Message Data\n```\n" + forceString(msgdata) + "\n```")
         msgdata = base64.b64decode(bytes(msgdata, "utf-8")).decode("ascii")
         if dodebug=="1":
-            sendMessage(sparkroom, "Decoded Message Data" + forceString(msgdata))
+            sendMessage(sparkroom, "Decoded Message Data\n```\n" + forceString(msgdata) + "\n```")
         if msgdata.find("\\") >= 0:
             msgdata = msgdata.replace('\"', '"')
         msgdata = msgdata.replace("\n","")
