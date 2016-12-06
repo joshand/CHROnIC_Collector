@@ -369,7 +369,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 print(url)
                 sendMessage(sparkroom, method + ":" + url)
                 if dodebug=="1":
-                    sendMessage(sparkroom, forceString(data) + "\n" + forceString(headers) + "\n" + forceString(auth))
+                    sendMessage(sparkroom, "```\n" + forceString(data) + "\n" + forceString(headers) + "\n" + forceString(auth) + "\n```")
 
                 try:
                     r = requests.request(method, url, data=data, headers=headers, auth=auth, cookies=cookies, verify=False)
@@ -381,7 +381,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 if r:
                     rcontent = r.content.decode("UTF-8")
                     if dodebug=="1":
-                        sendMessage(sparkroom, "Content:" + rcontent)
+                        sendMessage(sparkroom, "Content:\n```\n" + rcontent + "\n```")
                 else:
                     if dodebug=="1":
                         sendMessage(sparkroom, "No Content")
