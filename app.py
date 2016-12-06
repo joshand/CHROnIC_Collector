@@ -372,11 +372,18 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                     sendMessage(sparkroom, "```\n" + forceString(data) + "\n" + forceString(headers) + "\n" + forceString(auth) + "\n```")
 
                 try:
+                    if dodebug=="1":
+                        sendMessage(sparkroom, "Checkpoint 1")
                     r = requests.request(method, url, data=data, headers=headers, auth=auth, cookies=cookies, verify=False)
+                    if dodebug=="1":
+                        sendMessage(sparkroom, "Checkpoint 2")
                 except Exception as e:
                     #requests.exceptions.RequestException
                     sendMessage(sparkroom, "=================\n(1) Exception Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
                     r = ""
+
+                if dodebug=="1":
+                    sendMessage(sparkroom, "Checkpoint 3")
 
                 if r:
                     rcontent = r.content.decode("UTF-8")
