@@ -212,8 +212,8 @@ def ProcessXML(content, rootpath, retvals, con_json):
         #else:
         #    retjsonarr = jsonarr
         #return retjsonarr
-    except:
-        sendMessage(sparkroom, "=================\nException Encountered in ProcessXML.\nContent:" + forceString(content) + "\nRoot Path(s):" + forceString(rootpath) + "\nReturn Values:" + forceString(retvals) + "\nConsolidate JSON:" + forceString(con_json) + "\n=================")
+    except Exception as e:
+        sendMessage(sparkroom, "=================\nException Encountered in ProcessXML.\n" + forceString(e.strerror) + "\nContent:\n```\n" + forceString(content) + "\nRoot Path(s):" + forceString(rootpath) + "\nReturn Values:" + forceString(retvals) + "\nConsolidate JSON:" + forceString(con_json) + "\n```\n=================")
         jsonarr = []
 
     return jsonarr
@@ -372,30 +372,15 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                     sendMessage(sparkroom, "```\n" + forceString(data) + "\n" + forceString(headers) + "\n" + forceString(auth) + "\n```")
 
                 try:
-                    if dodebug=="1":
-                        #sendMessage(sparkroom, "Checkpoint 1")
-                        pass
                     r = requests.request(method, url, data=data, headers=headers, auth=auth, cookies=cookies, verify=False)
-                    if dodebug=="1":
-                        #sendMessage(sparkroom, "Checkpoint 2")
-                        pass
-                except Exception as e:
-                    #requests.exceptions.RequestException
-                    sendMessage(sparkroom, "=================\n(1) Exception Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
-                    r = ""
 
-                if dodebug=="1":
-                    sendMessage(sparkroom, "Checkpoint 3")
-                    print(r)
-                    sendMessage(sparkroom, "```\n" + forceString(r) + "\n```")
-
-                if r:
                     rcontent = r.content.decode("UTF-8")
                     if dodebug=="1":
-                        sendMessage(sparkroom, "Content:\n```\n" + rcontent + "\n```")
-                else:
-                    if dodebug=="1":
-                        sendMessage(sparkroom, "No Content")
+                        print(rcontent)
+                        sendMessage(sparkroom, "```\n" + forceString(rcontent) + "\n```")
+                except Exception as e:
+                    #requests.exceptions.RequestException
+                    sendMessage(sparkroom, "=================\n(1) Exception Encountered in ProcessMessages.\nError:" + forceString(e.strerror) + "\n=================")
                     rcontent = ""
 
             if returndata == "*":
@@ -465,7 +450,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
                 except Exception as e:
                     #requests.exceptions.RequestException
                     print(e)
-                    sendMessage(sparkroom, "=================\n(2) Exception Encountered in ProcessMessages.\nError:" + forceString(e) + "\n=================")
+                    sendMessage(sparkroom, "=================\n(2) Exception Encountered in ProcessMessages.\nError:" + forceString(e.strerror) + "\n=================")
                     r = ""
 
                 #print(rtype, rdata, data, r)
@@ -479,7 +464,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
             #print("ret2", ret2)
             #print("\n\n")
     except Exception as e:
-        sendMessage(sparkroom, "=================\n(3) Exception Encountered in ProcessMessages.\nError:" + forceString(e) + "\nMessage Data:" + forceString(msgdata) + "\nUpdate URL" + forceString(updateurl) + "\nMessage Description:" + forceString(msgdesc) + "\n=================")
+        sendMessage(sparkroom, "=================\n(3) Exception Encountered in ProcessMessages.\nError:" + forceString(e.strerror) + "\n```\nMessage Data:" + forceString(msgdata) + "\nUpdate URL" + forceString(updateurl) + "\nMessage Description:" + forceString(msgdesc) + "\n```\n=================")
 
 
 # -- Main Program Start
@@ -502,7 +487,7 @@ while True:
     except Exception as e:
         #requests.exceptions.RequestException
         print(e)
-        sendMessage(sparkroom, "=================\nException Encountered in Main.\nError:" + forceString(e) + "\n=================")
+        sendMessage(sparkroom, "=================\nException Encountered in Main.\nError:" + forceString(e.strerror) + "\n=================")
         r = ""
 
     if r:
