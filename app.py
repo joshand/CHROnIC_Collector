@@ -53,7 +53,7 @@ def forceString(vardata):
         retdata = str(list(vardata))
     elif isinstance(vardata, dict) or isinstance(vardata, list):
         retdata = str(retdata)
-    elif isinstance(vardata, string):
+    elif isinstance(vardata, str):
         retdata = vardata
     else:
         retdata = str(vardata)
