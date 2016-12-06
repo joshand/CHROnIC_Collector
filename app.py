@@ -40,7 +40,7 @@ def sendMessage(roomid,message):
         message = str(message)
     if sparktoken != "":
         url = "https://api.ciscospark.com/v1/messages"
-        hookdata = {"roomId": roomid, "text": message}
+        hookdata = {"roomId": roomid, "markdown": message}
         jsondata = json.dumps(hookdata)
 
         response = requests.request("POST", url, data=jsondata, headers=headers)
