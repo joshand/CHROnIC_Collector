@@ -64,12 +64,18 @@ def id_generator(size=8, chars=string.ascii_uppercase + string.digits + string.a
 
 # -- cleanxml: This strips the namespaces from imported XML to make processing simpler
 def cleanxml(data):
+    if dodebug=="1":
+        print("Starting XML Cleaning.")
+        sendMessage(sparkroom, "Starting XML Cleaning.")
     data = data.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
     data = data.replace('<soapenv:', '<')
     data = data.replace('</soapenv:', '</')
     data = data.replace('xmlns:', 'disabledtag')
     data = data.replace('xmlns=', 'disabledtag=')
     data = data.replace('xsi:', 'xsi')
+    if dodebug=="1":
+        print("Finishing XML Cleaning.")
+        sendMessage(sparkroom, "Finishing XML Cleaning.")
     return data
 
 
@@ -115,13 +121,22 @@ def download_file(url, local_filename, creds):
 # -- ProcessXML: This processes XML code and retrieves specified data from the tree.
 def ProcessXML(content, rootpath, retvals, con_json):
     try:
+        if dodebug=="1":
+            print("Starting XML Decoding.")
+            sendMessage(sparkroom, "Starting XML Decoding.")
         fdata = cleanxml(content)
         f = StringIO(fdata)
         tree = etree.parse(f)
+        if dodebug=="1":
+            print("XML Tree Ready.")
+            sendMessage(sparkroom, "XML Tree Ready.")
 
         jsonarr = {}
         retsingle = ""
         r = tree.xpath(rootpath)
+        if dodebug=="1":
+            print("Number of XPath elements from " + forceString(rootpath) + ":" + str(len(r)))
+            sendMessage(sparkroom, "Number of XPath elements from " + forceString(rootpath) + ":" + str(len(r)))
         #print("step 1:", rootpath, retvals, len(r))
         for x in range(0, len(r)):
             jsonarr[x] = {}
@@ -142,6 +157,9 @@ def ProcessXML(content, rootpath, retvals, con_json):
                     ret = arrret[0]
                     retnum = int(arrret[1])
 
+                if dodebug=="1":
+                    print("Searching for [[" + forceString(ret) + "]]")
+                    sendMessage(sparkroom, "Searching for [[" + forceString(ret) + "]]")
                 if ret == '~':
                     r2 = r[x].text
                     retsingle = r2
