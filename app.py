@@ -122,6 +122,27 @@ def download_file(url, local_filename, creds):
 def ProcessXML(content, rootpath, retvals, con_json):
     try:
         if dodebug=="1":
+            print("Dumping Debug Data")
+            print("============================")
+            print("| Content                  |")
+            print("============================")
+            print(content)
+            print("============================")
+            print("| Root Path                |")
+            print("============================")
+            print(rootpath)
+            print("============================")
+            print("| Return Values            |")
+            print("============================")
+            print(retvals)
+            print("============================")
+            print("| Consolidate?             |")
+            print("============================")
+            print(con_json)
+            print("============================")
+            print("| Complete                 |")
+            print("============================")
+        if dodebug=="1":
             print("Starting XML Decoding.")
             sendMessage(sparkroom, "Starting XML Decoding.")
         fdata = cleanxml(content)
