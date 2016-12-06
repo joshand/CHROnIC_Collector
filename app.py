@@ -51,7 +51,7 @@ def forceString(vardata):
     retdata = vardata
     if isinstance(vardata, dict) or isinstance(vardata, list):
         retdata = str(retdata)
-    else
+    else:
         retdata = vardata
 
     return retdata
@@ -224,6 +224,7 @@ def ProcessMessages(msgdata, updateurl, msgdesc):
     try:
         if dodebug==1:
             #sendMessage(sparkroom, "Encoded Message Data" + forceString(msgdata))
+            pass
         msgdata = base64.b64decode(bytes(msgdata, "utf-8")).decode("ascii")
         if dodebug==1:
             sendMessage(sparkroom, "Decoded Message Data" + forceString(msgdata))
